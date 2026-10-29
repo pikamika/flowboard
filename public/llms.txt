@@ -1,0 +1,12 @@
+# Flowboard
+
+> Flowboard is a team Kanban board web app. Teams sign in to organize work on a shared board with four columns (Backlog, In Progress, In Review, Done). Each card has a title, assignee, priority (High, Medium, Low) and due date. Cards can be dragged or moved between columns, edited, and deleted with undo, and changes sync live between teammates.
+
+The board itself is private and requires an account; only the public landing and sign-in page is crawlable.
+
+## Features
+- Four-column Kanban workflow with drag and drop plus a keyboard-accessible Move menu
+- Card fields: title, assignee, priority, due date, with overdue highlighting
+- Shared assignee list with duplicate prevention
+- Real-time sync across teammates and browser tabs
+- Built for accessibility (WCAG 2.2 AA oriented): keyboard, screen reader and touch support

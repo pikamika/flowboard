@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flowboard – Team Kanban Board for Planning and Tracking Work</title>
+    <meta
+      name="description"
+      content="A simple team Kanban board. Organize work across Backlog, In Progress, In Review and Done with assignees, priorities and due dates, synced live."
+    />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="theme-color" content="#0c66e4" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Flowboard" />
+    <meta property="og:title" content="Flowboard – Team Kanban Board" />
+    <meta
+      property="og:description"
+      content="Organize work across Backlog, In Progress, In Review and Done with assignees, priorities and due dates, synced live with your team."
+    />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Flowboard: a team Kanban board with Backlog, In Progress, In Review and Done columns" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Flowboard – Team Kanban Board" />
+    <meta
+      name="twitter:description"
+      content="A simple team Kanban board with live sync, priorities, assignees and due dates."
+    />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Flowboard",
+        "description": "A team Kanban board with Backlog, In Progress, In Review and Done columns. Cards have an assignee, priority and due date, and sync live between teammates.",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Any (web browser)",
+        "browserRequirements": "Requires JavaScript",
+        "featureList": [
+          "Four-column Kanban workflow",
+          "Drag and drop plus keyboard-accessible move menu",
+          "Assignee, priority and due date on every card",
+          "Delete with undo",
+          "Real-time sync between teammates"
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root">
+      <!-- Static content for crawlers and AI fetchers that do not run JavaScript; React replaces it on load. -->
+      <main class="prerender">
+        <h1>Flowboard – team Kanban board</h1>
+        <p>
+          Flowboard helps teams plan and track work on a shared board with four columns: Backlog,
+          In Progress, In Review and Done.
+        </p>
+        <h2>Features</h2>
+        <ul>
+          <li>Cards with a title, assignee, priority (High, Medium, Low) and due date</li>
+          <li>Drag cards between columns or use the keyboard-friendly Move menu</li>
+          <li>Delete with undo, and live sync between teammates</li>
+        </ul>
+        <p>Sign in to open your board. JavaScript is required to use the app.</p>
+      </main>
+    </div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
