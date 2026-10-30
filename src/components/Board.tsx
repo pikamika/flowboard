@@ -4,6 +4,7 @@ import { COLUMNS } from '../types'
 import { supabase, fromRow, toRow, type CardRow } from '../supabase'
 import Column from './Column'
 import Toast, { type ToastState } from './Toast'
+import { PlusIcon } from './icons'
 
 const CardModal = lazy(() => import('./CardModal'))
 
@@ -190,9 +191,14 @@ export default function Board() {
         {announcement}
       </div>
       <div inert={modal ? true : undefined}>
-      <div className="board-toolbar">
+      <div className="subbar">
+        <div className="subbar-title">
+          <h1>Team board</h1>
+          <span className="subbar-meta">{COLUMNS.length} columns</span>
+        </div>
         <button className="btn primary" onClick={() => openModal({ card: null, column: 'backlog' })}>
-          + Add card
+          <PlusIcon size={18} />
+          Add card
         </button>
       </div>
       <div className="board">
@@ -218,6 +224,15 @@ export default function Board() {
             card={modal.card}
             assignees={assignees}
             onSave={handleSave}
+            onDelete={
+              modal.card
+                ? () => {
+                    const id = modal.card!.id
+                    setModal(null)
+                    handleDelete(id)
+                  }
+                : undefined
+            }
             onClose={() => setModal(null)}
           />
         </Suspense>

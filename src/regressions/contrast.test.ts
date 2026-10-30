@@ -6,7 +6,9 @@ const textPairs: [string, string][] = [
   ['muted', 'surface'],
   ['muted', 'card'],
   ['muted', 'bg'],
-  ['text', 'border'], // card counts
+  ['text', 'card'],
+  ['text', 'surface'],
+  ['accent', 'card'], // links and the "Add" option
   ['text', 'bg'],
   ['danger', 'card'],
   ['danger', 'bg'],

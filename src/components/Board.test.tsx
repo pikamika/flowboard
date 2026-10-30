@@ -28,7 +28,7 @@ describe('Board: rendering', () => {
 
   it('shows an empty-state hint in empty columns', async () => {
     await renderBoard()
-    expect(within(column(/^Backlog/)).getByText(/No cards yet/)).toBeInTheDocument()
+    expect(within(column(/^Backlog/)).getByText(/Drop a card here or add one below/)).toBeInTheDocument()
   })
 })
 
@@ -46,7 +46,7 @@ describe('Board: creating cards', () => {
 
   it('adds a new card to Backlog from the toolbar button', async () => {
     const { user } = await renderBoard()
-    await user.click(screen.getByRole('button', { name: '+ Add card' }))
+    await user.click(screen.getByRole('button', { name: 'Add card' }))
     await fillAndSubmit(user)
 
     expect(await within(column(/^Backlog/)).findByText('Ship v1')).toBeInTheDocument()
@@ -71,7 +71,7 @@ describe('Board: creating cards', () => {
 
   it('does not save when the assignee is missing', async () => {
     const { user } = await renderBoard()
-    await user.click(screen.getByRole('button', { name: '+ Add card' }))
+    await user.click(screen.getByRole('button', { name: 'Add card' }))
     const dialog = await screen.findByRole('dialog')
     await user.type(within(dialog).getByLabelText('Title'), 'No owner')
     fireEvent.change(within(dialog).getByLabelText('Due date'), { target: { value: '2099-01-01' } })
@@ -84,7 +84,7 @@ describe('Board: creating cards', () => {
   it('shows an error toast when saving fails', async () => {
     const { user } = await renderBoard()
     fake.failNext('insert', 'insert failed')
-    await user.click(screen.getByRole('button', { name: '+ Add card' }))
+    await user.click(screen.getByRole('button', { name: 'Add card' }))
     await fillAndSubmit(user)
     expect(await screen.findByRole('alert')).toHaveTextContent('insert failed')
   })
@@ -112,6 +112,21 @@ describe('Board: editing cards', () => {
       id: 'c1',
       payload: { title: 'Write better docs', assignee: 'Mika', priority: 'Low', due_date: '2099-01-01' },
     })
+  })
+
+  it('shows Delete card only when editing, and deletes with Undo available', async () => {
+    const { user } = await renderBoard([makeRow()])
+    await user.click(screen.getByRole('button', { name: 'Add card' }))
+    expect(within(await screen.findByRole('dialog')).queryByRole('button', { name: 'Delete card' })).toBeNull()
+    await user.keyboard('{Escape}')
+    await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull())
+
+    await user.click(screen.getByRole('button', { name: 'Edit Write docs' }))
+    await user.click(within(await screen.findByRole('dialog')).getByRole('button', { name: 'Delete card' }))
+
+    await waitFor(() => expect(fake.callsOf('delete')).toHaveLength(1))
+    expect(screen.queryByText('Write docs', { selector: 'h3' })).toBeNull()
+    expect(await screen.findByRole('button', { name: 'Undo' })).toBeInTheDocument()
   })
 
   it('discards changes on Escape', async () => {

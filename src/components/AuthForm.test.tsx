@@ -10,6 +10,17 @@ const fill = async (user: ReturnType<typeof userEvent.setup>) => {
 }
 
 describe('AuthForm', () => {
+  it('switches between sign in and sign up with the segmented control', async () => {
+    const user = userEvent.setup()
+    render(<AuthForm />)
+    expect(screen.getByRole('radio', { name: 'Sign in' })).toBeChecked()
+    expect(screen.getByRole('button', { name: 'Sign in' })).toBeInTheDocument()
+
+    await user.click(screen.getByRole('radio', { name: 'Sign up' }))
+    expect(screen.getByRole('radio', { name: 'Sign up' })).toBeChecked()
+    expect(screen.getByRole('button', { name: 'Create account' })).toBeInTheDocument()
+  })
+
   it('signs in with the entered credentials', async () => {
     const user = userEvent.setup()
     render(<AuthForm />)
@@ -33,9 +44,9 @@ describe('AuthForm', () => {
   it('tells new users to confirm their email after signing up', async () => {
     const user = userEvent.setup()
     render(<AuthForm />)
-    await user.click(screen.getByRole('button', { name: /Need an account/ }))
+    await user.click(screen.getByRole('radio', { name: 'Sign up' }))
     await fill(user)
-    await user.click(screen.getByRole('button', { name: 'Sign up' }))
+    await user.click(screen.getByRole('button', { name: 'Create account' }))
     expect(await screen.findByRole('status')).toHaveTextContent(/Check your email/)
   })
 })

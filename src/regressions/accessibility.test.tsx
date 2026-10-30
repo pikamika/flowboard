@@ -64,7 +64,7 @@ describe('names, roles and structure', () => {
   it('makes the sign-in page a main landmark with h1 then h2 (and autofill hint)', () => {
     render(<AuthForm />)
     expect(screen.getByRole('main')).toBeInTheDocument()
-    expect(screen.getByRole('heading', { level: 1, name: 'Flowboard' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 1, name: 'FlowBoard' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { level: 2, name: 'Sign in' })).toBeInTheDocument()
     expect(screen.getByLabelText('Email')).toHaveAttribute('autocomplete', 'email')
   })
@@ -148,7 +148,7 @@ describe('keyboard and focus management', () => {
 
   it('hands focus back to the opening button when the dialog closes', async () => {
     const { user } = await renderBoard()
-    const add = screen.getByRole('button', { name: '+ Add card' })
+    const add = screen.getByRole('button', { name: 'Add card' })
     await user.click(add)
     await screen.findByRole('dialog')
     await user.keyboard('{Escape}')
@@ -158,7 +158,7 @@ describe('keyboard and focus management', () => {
 
   it('makes the board inert while the dialog is open', async () => {
     const { user, container } = await renderBoard()
-    await user.click(screen.getByRole('button', { name: '+ Add card' }))
+    await user.click(screen.getByRole('button', { name: 'Add card' }))
     await screen.findByRole('dialog')
     expect(container.querySelector('[inert]')).not.toBeNull()
   })
@@ -166,12 +166,12 @@ describe('keyboard and focus management', () => {
   it('keeps Tab inside the dialog (focus trap)', async () => {
     const user = userEvent.setup()
     render(<CardModal card={null} assignees={[]} onSave={vi.fn()} onClose={vi.fn()} />)
-    const title = screen.getByLabelText('Title')
+    const first = screen.getByRole('button', { name: 'Close' })
     const submit = screen.getByRole('button', { name: 'Add card' })
 
     submit.focus()
     await user.tab()
-    expect(title).toHaveFocus()
+    expect(first).toHaveFocus()
     await user.tab({ shift: true })
     expect(submit).toHaveFocus()
   })

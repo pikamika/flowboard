@@ -1,6 +1,7 @@
 import { useId, useState } from 'react'
 import type { Card as CardType, ColumnId } from '../types'
 import Card from './Card'
+import { PlusIcon, UploadIcon } from './icons'
 
 interface Props {
   id: ColumnId
@@ -73,7 +74,10 @@ export default function Column({
           <div className="skeleton" />
         </div>
       ) : cards.length === 0 ? (
-        <p className="empty">No cards yet. Drop one here or add a new card.</p>
+        <div className="empty">
+          <UploadIcon />
+          <p>Drop a card here or add one below</p>
+        </div>
       ) : (
         <ul className="column-cards">
           {cards.map((card) => (
@@ -84,7 +88,10 @@ export default function Column({
         </ul>
       )}
       <button className="add-card" onClick={() => onAdd(id)}>
-        + Add card<span className="sr-only"> to {label}</span>
+        <PlusIcon />
+        <span>
+          Add card<span className="sr-only"> to {label}</span>
+        </span>
       </button>
     </section>
   )

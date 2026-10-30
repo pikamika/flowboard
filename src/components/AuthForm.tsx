@@ -1,8 +1,11 @@
 import { useState } from 'react'
 import { supabase } from '../supabase'
+import { ColumnsIcon } from './icons'
+
+type Mode = 'signin' | 'signup'
 
 export default function AuthForm() {
-  const [mode, setMode] = useState<'signin' | 'signup'>('signin')
+  const [mode, setMode] = useState<Mode>('signin')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
@@ -25,20 +28,51 @@ export default function AuthForm() {
     setBusy(false)
   }
 
+  const choose = (next: Mode) => {
+    setMode(next)
+    setError(null)
+    setNotice(null)
+  }
+
   return (
     <main className="auth-wrap">
       <div className="auth-intro">
-        <h1>Flowboard</h1>
-        <p>A team Kanban board: Backlog, In Progress, In Review and Done, with assignees, priorities and due dates, synced live.</p>
+        <span className="logo-tile large" aria-hidden="true">
+          <ColumnsIcon size={24} />
+        </span>
+        <h1>FlowBoard</h1>
+        <p>{mode === 'signin' ? 'Sign in to manage your boards' : 'Create an account to get started'}</p>
       </div>
-      <form className="modal" onSubmit={submit}>
-        <h2>{mode === 'signin' ? 'Sign in' : 'Create your account'}</h2>
-        <label>
-          Email
-          <input type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} required autoFocus />
+      <form className="auth-card" onSubmit={submit}>
+        <h2 className="sr-only">{mode === 'signin' ? 'Sign in' : 'Create your account'}</h2>
+        <div className="segmented" role="radiogroup" aria-label="Account">
+          {(['signin', 'signup'] as const).map((m) => (
+            <label key={m} className={mode === m ? 'segment selected' : 'segment'}>
+              <input
+                type="radio"
+                name="mode"
+                checked={mode === m}
+                onChange={() => choose(m)}
+                aria-label={m === 'signin' ? 'Sign in' : 'Sign up'}
+              />
+              <span aria-hidden="true">{m === 'signin' ? 'Sign in' : 'Sign up'}</span>
+            </label>
+          ))}
+        </div>
+        <label className="field">
+          <span className="field-label">Email</span>
+          <input
+            type="email"
+            autoComplete="email"
+            placeholder="you@example.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            autoFocus
+          />
         </label>
-        <label>
-          Password
+        <label className="field">
+          <span className="field-label">Password</span>
           <input
             type="password"
             value={password}
@@ -50,19 +84,8 @@ export default function AuthForm() {
         </label>
         {error && <p className="form-error" role="alert">{error}</p>}
         {notice && <p className="form-notice" role="status">{notice}</p>}
-        <button type="submit" className="btn primary" disabled={busy}>
-          {mode === 'signin' ? 'Sign in' : 'Sign up'}
-        </button>
-        <button
-          type="button"
-          className="link-btn"
-          onClick={() => {
-            setMode(mode === 'signin' ? 'signup' : 'signin')
-            setError(null)
-            setNotice(null)
-          }}
-        >
-          {mode === 'signin' ? 'Need an account? Sign up' : 'Have an account? Sign in'}
+        <button type="submit" className="btn primary block" disabled={busy}>
+          {mode === 'signin' ? 'Sign in' : 'Create account'}
         </button>
       </form>
     </main>
